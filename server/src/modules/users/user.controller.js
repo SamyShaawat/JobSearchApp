@@ -1,11 +1,19 @@
 import { Router } from "express";
-// import { addUser, getUsers, updateUser } from "./user.service.js";
+import { addUser } from "./user.service.js";
+// import { confirmEmail, getProfile, signIn, signUp } from "./user.service.js";
+// import { authentication } from "../../middleware/auth.js";
+// import { validation } from "../../middleware/validation.js";
+// import { signUpSchema } from "./user.validation.js";
+
 const userRouter = Router();
 
 
-// userRouter.post("/", addUser);
-// userRouter.get("/", getUsers);
-// userRouter.patch("/:id", updateUser);
+// userRouter.post("/signUp", validation(signUpSchema), signUp);
+// userRouter.post("/signIn", signIn);
+// userRouter.get("/confirmEmail/:token", confirmEmail);
+// userRouter.get("/getProfile", authentication, getProfile);
+userRouter.post("/addUser", addUser);
+
 
 
 
