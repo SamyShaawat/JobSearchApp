@@ -1,4 +1,5 @@
 import connectionDB from "./DB/connectionDB.js";
+import companyRouter from "./modules/companies/company.controller.js";
 import userRouter from "./modules/users/user.controller.js";
 import { globalErrorHandler } from "./utils/errorHandling.js";
 
@@ -8,6 +9,7 @@ const bootstrap = async (app, express) => {
   
   // application routes
   app.use("/users", userRouter);
+  app.use("/companies", companyRouter);
   
   // connect to database and wait until it's successful
   await connectionDB();
