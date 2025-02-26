@@ -1,15 +1,17 @@
 import mongoose from 'mongoose';
-const dbName = "JobSearchApp"
 
 const connectionDB = async () => {
-    await mongoose.connect(`mongodb://localhost:27017/${dbName}`)
-        .then(() => {
-            console.log(`Connected to MongoDB ${dbName} ...`);
-        })
-        .catch((err) => {
-            console.log("Error connecting to MongoDB: ", err);
-
-        })
-}
+  const uri = process.env.URI_CONNECTION || "mongodb://localhost:27017/JobSearchApp";
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`Connected to MongoDB at ${uri}`);
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); 
+  }
+};
 
 export default connectionDB;
