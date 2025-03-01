@@ -24,4 +24,6 @@ userRouter.patch("/updateUser", authentication, validation(UV.updateUserSchema),
 userRouter.get("/getProfile", authentication, US.getProfile);
 userRouter.get("/getAnotherUserProfile/:userId", authentication, US.getAnotherUserProfile);
 
+userRouter.patch("/updatePassword", authentication, validation(UV.updatePasswordSchema), US.updatePassword);
+
 export default userRouter;

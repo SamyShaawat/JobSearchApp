@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateOTP } from '../../utils/otp.js';
 import { OAuth2Client } from 'google-auth-library';
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
@@ -349,7 +350,7 @@ export const getAnotherUserProfile = asyncHandler(async (req, res, next) => {
     }
 
     const userDoc = user.toJSON();
-    console.log(userDoc);
+    // console.log(userDoc);
 
     const {
         userName,
@@ -362,4 +363,33 @@ export const getAnotherUserProfile = asyncHandler(async (req, res, next) => {
         message: "Profile retrieved successfully",
         data: { userName, mobileNumber, profilePic, coverPic }
     });
+});
+
+export const updatePassword = asyncHandler(async (req, res, next) => {
+    const { oldPassword, newPassword } = req.body;
+
+    // Find the user from req.user._id
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // Compare oldPassword with the stored (hashed) password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: "Old password is incorrect" });
+    }
+
+    // Hash the new password
+    const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
+    const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // Update user password + changeCredentialTime
+    user.password = hashedNewPassword;
+    user.changeCredentialTime = new Date();
+
+    // Save => triggers pre-save hook if you have one, but you can do it manually as well
+    await user.save();
+
+    return res.status(200).json({ message: "Password updated successfully" });
 });
