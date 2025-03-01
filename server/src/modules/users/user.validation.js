@@ -27,3 +27,9 @@ export const signInSchema = {
         password: Joi.string().required()
     })
 };
+
+export const googleAuthSchema = {
+    body: Joi.object({
+        idToken: Joi.string().required()
+    })
+};

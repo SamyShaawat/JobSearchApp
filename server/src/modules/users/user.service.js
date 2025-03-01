@@ -4,7 +4,8 @@ import { sendEmail } from '../../service/sendEmails.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateOTP } from '../../utils/otp.js';
-
+import { OAuth2Client } from 'google-auth-library';
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
 
@@ -111,6 +112,84 @@ export const signIn = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
         message: "Sign in successful",
         tokens: { accessToken, refreshToken }
+    });
+});
+
+export const googleSignUp = asyncHandler(async (req, res, next) => {
+    const { idToken } = req.body;
+
+    // Verify the idToken received from the client
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // Extract details from the payload
+    const { email, given_name, family_name } = payload;
+
+    // Check if user already exists
+    let user = await userModel.findOne({ email });
+    if (user) {
+        return res.status(400).json({ message: "User already exists. Please sign in." });
+    }
+
+
+    const defaultDOB = new Date('1990-01-01');
+    const defaultGender = 'Male';
+    const defaultMobile = '0000000000';
+
+    // Create a new user with details from Google
+    user = await userModel.create({
+        firstName: given_name,
+        lastName: family_name,
+        email,
+        password: await bcrypt.hash('googleAuth', Number(process.env.SALT_ROUNDS || 12)),
+        mobileNumber: defaultMobile,
+        gender: defaultGender,
+        DOB: defaultDOB,
+        provider: 'google',
+        isConfirmed: true
+    });
+
+    // Generate JWT tokens
+    const accessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '7d' });
+
+    return res.status(201).json({
+        message: "User created with Google successfully",
+        tokens: { accessToken, refreshToken },
+        data: user
+    });
+});
+
+export const googleSignIn = asyncHandler(async (req, res, next) => {
+    const { idToken } = req.body;
+
+    // Verify the idToken
+    const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // Extract email from the payload
+    const { email } = payload;
+
+    // Check if the user exists and is a Google user
+    const user = await userModel.findOne({ email, provider: 'google' });
+    if (!user) {
+        return res.status(404).json({ message: "User not found. Please sign up with Google first." });
+    }
+
+    // Generate tokens
+    const accessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '7d' });
+
+    return res.status(200).json({
+        message: "Google sign in successful",
+        tokens: { accessToken, refreshToken },
+        data: user
     });
 });
 
