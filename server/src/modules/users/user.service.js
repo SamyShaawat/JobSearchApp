@@ -117,29 +117,22 @@ export const signIn = asyncHandler(async (req, res, next) => {
 
 export const googleSignUp = asyncHandler(async (req, res, next) => {
     const { idToken } = req.body;
-
-    // Verify the idToken received from the client
     const ticket = await client.verifyIdToken({
         idToken,
         audience: process.env.GOOGLE_CLIENT_ID,
     });
     const payload = ticket.getPayload();
-
-    // Extract details from the payload
     const { email, given_name, family_name } = payload;
 
-    // Check if user already exists
     let user = await userModel.findOne({ email });
     if (user) {
         return res.status(400).json({ message: "User already exists. Please sign in." });
     }
 
-
     const defaultDOB = new Date('1990-01-01');
     const defaultGender = 'Male';
     const defaultMobile = '0000000000';
 
-    // Create a new user with details from Google
     user = await userModel.create({
         firstName: given_name,
         lastName: family_name,
@@ -152,7 +145,6 @@ export const googleSignUp = asyncHandler(async (req, res, next) => {
         isConfirmed: true
     });
 
-    // Generate JWT tokens
     const accessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '7d' });
 
@@ -289,7 +281,7 @@ export const refreshToken = asyncHandler(async (req, res, next) => {
         }
 
         // Compare token iat with user.changeCredentialTime
-        const tokenIssuedAt = decoded.iat * 1000; 
+        const tokenIssuedAt = decoded.iat * 1000;
         const credentialChangeTime = user.changeCredentialTime
             ? user.changeCredentialTime.getTime()
             : 0;
@@ -343,7 +335,31 @@ export const updateUser = asyncHandler(async (req, res, next) => {
 
 export const getProfile = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
-      message: "User profile retrieved successfully",
-      data: req.user
+        message: "User profile retrieved successfully",
+        data: req.user
     });
-  });
+});
+
+export const getAnotherUserProfile = asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+
+    const user = await userModel.findById(userId);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const userDoc = user.toJSON();
+    console.log(userDoc);
+
+    const {
+        userName,
+        mobileNumber,
+        profilePic,
+        coverPic
+    } = userDoc;
+
+    return res.status(200).json({
+        message: "Profile retrieved successfully",
+        data: { userName, mobileNumber, profilePic, coverPic }
+    });
+});

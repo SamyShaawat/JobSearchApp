@@ -109,8 +109,8 @@ const userSchema = new mongoose.Schema({
 });
 
 // Virtual field for username 
-userSchema.virtual('username').get(function () {
-    return `${this.firstName}${this.lastName}`;
+userSchema.virtual('userName').get(function () {
+    return `${this.firstName} ${this.lastName}`;
 });
 
 // Ensure virtual fields are included when converting documents to JSON or Objects
@@ -136,6 +136,7 @@ function decryptMobileNumber(encryptedValue) {
 
 // toJSON transform: decrypt mobileNumber
 userSchema.set('toJSON', {
+    virtuals: true,
     transform: (doc, ret) => {
         if (ret.mobileNumber) {
             ret.mobileNumber = decryptMobileNumber(ret.mobileNumber);
