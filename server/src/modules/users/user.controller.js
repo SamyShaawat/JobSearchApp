@@ -30,4 +30,7 @@ userRouter.patch("/updatePassword", authentication, validation(UV.updatePassword
 userRouter.patch("/uploadProfilePic", authentication, uploadProfilePic.single("profilePic"), US.uploadProfilePic);
 userRouter.patch("/uploadCoverPic", authentication, uploadCoverPic.single("coverPic"), US.uploadCoverPic);
 
+userRouter.delete("/deleteProfilePic", authentication, US.deleteProfilePic);
+userRouter.delete("/deleteCoverPic", authentication, US.deleteCoverPic);
+
 export default userRouter;

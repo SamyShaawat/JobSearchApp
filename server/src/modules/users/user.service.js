@@ -451,3 +451,38 @@ export const uploadCoverPic = asyncHandler(async (req, res, next) => {
         data: user.coverPic
     });
 });
+
+export const deleteProfilePic = asyncHandler(async (req, res, next) => {
+    // Find user
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // If there's a public_id, remove from Cloudinary
+    if (user.profilePic?.public_id) {
+        await cloudinary.uploader.destroy(user.profilePic.public_id);
+    }
+
+    // Clear from DB
+    user.profilePic = { secure_url: null, public_id: null };
+    await user.save();
+
+    return res.status(200).json({ message: "Profile pic deleted successfully" });
+});
+
+export const deleteCoverPic = asyncHandler(async (req, res, next) => {
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.coverPic?.public_id) {
+        await cloudinary.uploader.destroy(user.coverPic.public_id);
+    }
+
+    user.coverPic = { secure_url: null, public_id: null };
+    await user.save();
+
+    return res.status(200).json({ message: "Cover pic deleted successfully" });
+});
