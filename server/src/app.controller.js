@@ -5,8 +5,16 @@ import companyRouter from "./modules/companies/company.controller.js";
 import jobOpportunityRouter from "./modules/jobs/jobOpportunity.controller.js";
 import userRouter from "./modules/users/user.controller.js";
 import { globalErrorHandler } from "./utils/errorHandling.js";
+import cors from "cors";
 
 const bootstrap = async (app, express) => {
+
+  app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    })
+  );
   // use json middleware for parsing request data
   app.use(express.json());
 
