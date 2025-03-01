@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as US from "./user.service.js";
 import * as UV from "./user.validation.js";
 import { validation } from "../../middleware/validation.js";
-import { authentication } from "../../middleware/auth.js";
+import { authentication } from "../../middleware/authentication.js";
 import { uploadProfilePic, uploadCoverPic } from "../../middleware/multer.js";
 
 const userRouter = Router();
