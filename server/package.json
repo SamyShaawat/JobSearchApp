@@ -15,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
+    "cloudinary-core": "^2.13.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
