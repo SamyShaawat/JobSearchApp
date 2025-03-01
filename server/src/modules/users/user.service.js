@@ -9,8 +9,6 @@ import cloudinary from '../../../config/cloudinary.js';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-
-
 export const signUp = asyncHandler(async (req, res, next) => {
     const { firstName, lastName, email, password, mobileNumber, gender, DOB, provider } = req.body;
 
