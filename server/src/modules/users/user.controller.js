@@ -20,5 +20,6 @@ userRouter.post("/refreshToken", validation(UV.refreshTokenSchema), US.refreshTo
 
 // 2- User Apis
 userRouter.patch("/updateUser", authentication, validation(UV.updateUserSchema), US.updateUser);
+userRouter.get("/getProfile", authentication, US.getProfile);
 
 export default userRouter;

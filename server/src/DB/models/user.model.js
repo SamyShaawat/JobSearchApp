@@ -127,6 +127,22 @@ userSchema.pre('save', function (next) {
     next();
 });
 
+// Helper function to decrypt
+function decryptMobileNumber(encryptedValue) {
+    const key = process.env.MOBILE_ENCRYPTION_KEY;
+    const bytes = CryptoJS.AES.decrypt(encryptedValue, key);
+    return bytes.toString(CryptoJS.enc.Utf8);
+}
+
+// toJSON transform: decrypt mobileNumber
+userSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        if (ret.mobileNumber) {
+            ret.mobileNumber = decryptMobileNumber(ret.mobileNumber);
+        }
+        return ret;
+    }
+});
 // mongoose hook for cascading deletion 
 userSchema.pre('remove', async function (next) {
     next();

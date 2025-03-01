@@ -340,3 +340,10 @@ export const updateUser = asyncHandler(async (req, res, next) => {
         data: user
     });
 });
+
+export const getProfile = asyncHandler(async (req, res, next) => {
+    return res.status(200).json({
+      message: "User profile retrieved successfully",
+      data: req.user
+    });
+  });
