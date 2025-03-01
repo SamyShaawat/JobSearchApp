@@ -120,9 +120,7 @@ userSchema.set('toObject', { virtuals: true });
 // Pre-save hook for encrypting mobileNumber 
 userSchema.pre('save', function (next) {
     if (this.isModified('mobileNumber')) {
-        // Use your encryption key from your environment variable
         const key = process.env.MOBILE_ENCRYPTION_KEY;
-        // Encrypt the mobileNumber using AES
         const encrypted = CryptoJS.AES.encrypt(this.mobileNumber, key).toString();
         this.mobileNumber = encrypted;
     }

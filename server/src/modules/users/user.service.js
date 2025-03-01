@@ -196,30 +196,30 @@ export const googleSignIn = asyncHandler(async (req, res, next) => {
 export const sendOTPForForgetPassword = asyncHandler(async (req, res, next) => {
     const { email } = req.body;
 
-    // 1) Check if user exists
+    // Check if user exists
     const user = await userModel.findOne({ email });
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
 
-    // 2) Generate OTP and hash it
+    // Generate OTP and hash it
     const otp = generateOTP();
     const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
     const hashedOTP = await bcrypt.hash(otp, saltRounds);
 
-    // 3) Create 'forgetPassword' OTP entry
+    // Create 'forgetPassword' OTP entry
     const otpEntry = {
         code: hashedOTP,
         type: 'forgetPassword',
         expiresIn: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
     };
 
-    // Optional: Remove any old 'forgetPassword' entries
+    // Remove any old 'forgetPassword' entries
     user.OTP = user.OTP.filter(entry => entry.type !== 'forgetPassword');
     user.OTP.push(otpEntry);
     await user.save();
 
-    // 4) Send email with raw OTP
+    // Send email with raw OTP
     const emailBody = `<p>Your OTP for password reset is: <b>${otp}</b></p>`;
     await sendEmail(user.email, "Reset Password OTP", emailBody);
 
@@ -231,30 +231,30 @@ export const sendOTPForForgetPassword = asyncHandler(async (req, res, next) => {
 export const resetPassword = asyncHandler(async (req, res, next) => {
     const { email, newPassword, otp } = req.body;
 
-    // 1) Find user
+    // Find user
     const user = await userModel.findOne({ email });
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
 
-    // 2) Find 'forgetPassword' OTP entry
+    // Find 'forgetPassword' OTP entry
     const otpEntry = user.OTP.find(entry => entry.type === 'forgetPassword');
     if (!otpEntry) {
         return res.status(400).json({ message: "No forget password OTP found" });
     }
 
-    // 3) Check if OTP is expired
+    // Check if OTP is expired
     if (otpEntry.expiresIn < new Date()) {
         return res.status(400).json({ message: "OTP has expired" });
     }
 
-    // 4) Compare provided OTP with hashed code
+    // Compare provided OTP with hashed code
     const isMatch = await bcrypt.compare(otp, otpEntry.code);
     if (!isMatch) {
         return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // 5) All good => Update password
+    // All good => Update password
     const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     user.password = hashedPassword;
@@ -289,7 +289,7 @@ export const refreshToken = asyncHandler(async (req, res, next) => {
         }
 
         // Compare token iat with user.changeCredentialTime
-        const tokenIssuedAt = decoded.iat * 1000; // convert to ms
+        const tokenIssuedAt = decoded.iat * 1000; 
         const credentialChangeTime = user.changeCredentialTime
             ? user.changeCredentialTime.getTime()
             : 0;
@@ -314,4 +314,29 @@ export const refreshToken = asyncHandler(async (req, res, next) => {
         }
         next(error);
     }
+});
+
+export const updateUser = asyncHandler(async (req, res, next) => {
+    const { firstName, lastName, mobileNumber, DOB, gender } = req.body;
+
+    // Find the user (req.user._id is set by your auth middleware)
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update only fields that are provided
+    if (firstName !== undefined) user.firstName = firstName;
+    if (lastName !== undefined) user.lastName = lastName;
+    if (mobileNumber !== undefined) user.mobileNumber = mobileNumber;
+    if (DOB !== undefined) user.DOB = DOB;
+    if (gender !== undefined) user.gender = gender;
+
+    // Save user => triggers pre-save hook for encryption if mobileNumber changed
+    await user.save();
+
+    return res.status(200).json({
+        message: "User updated successfully",
+        data: user
+    });
 });

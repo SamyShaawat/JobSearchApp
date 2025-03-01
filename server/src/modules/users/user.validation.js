@@ -53,3 +53,13 @@ export const refreshTokenSchema = {
         refreshToken: Joi.string().required()
     })
 };
+
+export const updateUserSchema = {
+    body: Joi.object({
+      firstName: Joi.string().trim().optional(),
+      lastName: Joi.string().trim().optional(),
+      mobileNumber: Joi.string().optional(),
+      DOB: Joi.date().less('now').optional(),
+      gender: Joi.string().valid('Male', 'Female').optional()
+    })
+  };
