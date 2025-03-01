@@ -193,3 +193,125 @@ export const googleSignIn = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const sendOTPForForgetPassword = asyncHandler(async (req, res, next) => {
+    const { email } = req.body;
+
+    // 1) Check if user exists
+    const user = await userModel.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2) Generate OTP and hash it
+    const otp = generateOTP();
+    const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
+    const hashedOTP = await bcrypt.hash(otp, saltRounds);
+
+    // 3) Create 'forgetPassword' OTP entry
+    const otpEntry = {
+        code: hashedOTP,
+        type: 'forgetPassword',
+        expiresIn: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes from now
+    };
+
+    // Optional: Remove any old 'forgetPassword' entries
+    user.OTP = user.OTP.filter(entry => entry.type !== 'forgetPassword');
+    user.OTP.push(otpEntry);
+    await user.save();
+
+    // 4) Send email with raw OTP
+    const emailBody = `<p>Your OTP for password reset is: <b>${otp}</b></p>`;
+    await sendEmail(user.email, "Reset Password OTP", emailBody);
+
+    return res.status(200).json({
+        message: "OTP sent to your email. Check your inbox/spam."
+    });
+});
+
+export const resetPassword = asyncHandler(async (req, res, next) => {
+    const { email, newPassword, otp } = req.body;
+
+    // 1) Find user
+    const user = await userModel.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // 2) Find 'forgetPassword' OTP entry
+    const otpEntry = user.OTP.find(entry => entry.type === 'forgetPassword');
+    if (!otpEntry) {
+        return res.status(400).json({ message: "No forget password OTP found" });
+    }
+
+    // 3) Check if OTP is expired
+    if (otpEntry.expiresIn < new Date()) {
+        return res.status(400).json({ message: "OTP has expired" });
+    }
+
+    // 4) Compare provided OTP with hashed code
+    const isMatch = await bcrypt.compare(otp, otpEntry.code);
+    if (!isMatch) {
+        return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    // 5) All good => Update password
+    const saltRounds = Number(process.env.SALT_ROUNDS) || 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    user.password = hashedPassword;
+
+    // Remove the OTP entry from array
+    user.OTP = user.OTP.filter(entry => entry.type !== 'forgetPassword');
+
+    // Update changeCredentialTime so old tokens become invalid
+    user.changeCredentialTime = new Date();
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successfully" });
+});
+
+export const refreshToken = asyncHandler(async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body;
+        if (!refreshToken) {
+            return res.status(400).json({ message: "Refresh token is required" });
+        }
+
+        // Verify refresh token
+        const decoded = jwt.verify(refreshToken, process.env.SIGNATURE_TOKEN_USER);
+        if (!decoded?.id) {
+            return res.status(401).json({ message: "Invalid refresh token" });
+        }
+
+        // Find user
+        const user = await userModel.findById(decoded.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Compare token iat with user.changeCredentialTime
+        const tokenIssuedAt = decoded.iat * 1000; // convert to ms
+        const credentialChangeTime = user.changeCredentialTime
+            ? user.changeCredentialTime.getTime()
+            : 0;
+
+        if (tokenIssuedAt < credentialChangeTime) {
+            return res.status(403).json({ message: "Refresh token is invalidated by password change" });
+        }
+
+        // Generate new access token
+        const newAccessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, {
+            expiresIn: "1h"
+        });
+
+        return res.status(200).json({
+            message: "New access token generated",
+            accessToken: newAccessToken
+        });
+    } catch (error) {
+        // If token is invalid or expired
+        if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
+            return res.status(401).json({ message: "Invalid or expired refresh token" });
+        }
+        next(error);
+    }
+});

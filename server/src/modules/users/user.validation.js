@@ -33,3 +33,23 @@ export const googleAuthSchema = {
         idToken: Joi.string().required()
     })
 };
+
+export const forgetPasswordSchema = {
+    body: Joi.object({
+        email: Joi.string().email().required()
+    })
+};
+
+export const resetPasswordSchema = {
+    body: Joi.object({
+        email: Joi.string().email().required(),
+        newPassword: Joi.string().min(8).required(),
+        otp: Joi.string().required()
+    })
+};
+
+export const refreshTokenSchema = {
+    body: Joi.object({
+        refreshToken: Joi.string().required()
+    })
+};
