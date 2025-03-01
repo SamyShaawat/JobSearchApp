@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { generateOTP } from '../../utils/otp.js';
 import { OAuth2Client } from 'google-auth-library';
+import cloudinary from '../../../config/cloudinary.js';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -392,4 +393,61 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
     await user.save();
 
     return res.status(200).json({ message: "Password updated successfully" });
+});
+
+export const uploadProfilePic = asyncHandler(async (req, res, next) => {
+    // Check if a file was uploaded
+    if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    // See what multer-storage-cloudinary returned
+    console.log("DEBUG => req.file:", req.file);
+
+    // Find user
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    if (user.profilePic?.public_id) {
+        await cloudinary.uploader.destroy(user.profilePic.public_id);
+    }
+    // Update user's profilePic with Cloudinary info
+    user.profilePic = {
+        secure_url: req.file.path,
+        public_id: req.file.filename,
+    };
+    await user.save();
+
+    return res.status(200).json({
+        message: "Profile pic uploaded successfully",
+        data: user.profilePic
+    });
+});
+
+export const uploadCoverPic = asyncHandler(async (req, res, next) => {
+    if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    console.log("DEBUG => req.file:", req.file);
+
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+    if (user.coverPic?.public_id) {
+        await cloudinary.uploader.destroy(user.coverPic.public_id);
+    }
+
+    user.coverPic = {
+        secure_url: req.file.path,
+        public_id: req.file.filename,
+    };
+    await user.save();
+
+    return res.status(200).json({
+        message: "Cover pic uploaded successfully",
+        data: user.coverPic
+    });
 });

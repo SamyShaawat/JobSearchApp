@@ -3,6 +3,7 @@ import * as US from "./user.service.js";
 import * as UV from "./user.validation.js";
 import { validation } from "../../middleware/validation.js";
 import { authentication } from "../../middleware/auth.js";
+import { uploadProfilePic, uploadCoverPic } from "../../middleware/multer.js";
 
 const userRouter = Router();
 
@@ -25,5 +26,8 @@ userRouter.get("/getProfile", authentication, US.getProfile);
 userRouter.get("/getAnotherUserProfile/:userId", authentication, US.getAnotherUserProfile);
 
 userRouter.patch("/updatePassword", authentication, validation(UV.updatePasswordSchema), US.updatePassword);
+
+userRouter.patch("/uploadProfilePic", authentication, uploadProfilePic.single("profilePic"), US.uploadProfilePic);
+userRouter.patch("/uploadCoverPic", authentication, uploadCoverPic.single("coverPic"), US.uploadCoverPic);
 
 export default userRouter;
