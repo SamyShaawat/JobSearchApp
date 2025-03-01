@@ -486,3 +486,24 @@ export const deleteCoverPic = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({ message: "Cover pic deleted successfully" });
 });
+
+export const softDeleteAccount = asyncHandler(async (req, res, next) => {
+    // Find the user
+    const user = await userModel.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if already soft-deleted
+    if (user.deletedAt) {
+        return res.status(400).json({ message: "User account is already soft-deleted" });
+    }
+
+    // Soft-delete by setting deletedAt
+    user.deletedAt = new Date();
+    await user.save();
+
+    return res.status(200).json({
+        message: "User account soft-deleted successfully"
+    });
+});

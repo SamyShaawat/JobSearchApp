@@ -33,4 +33,6 @@ userRouter.patch("/uploadCoverPic", authentication, uploadCoverPic.single("cover
 userRouter.delete("/deleteProfilePic", authentication, US.deleteProfilePic);
 userRouter.delete("/deleteCoverPic", authentication, US.deleteCoverPic);
 
+userRouter.delete("/softDeleteAccount", authentication, US.softDeleteAccount);
+
 export default userRouter;
