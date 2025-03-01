@@ -1,18 +1,18 @@
 import { Router } from "express";
-import { addUser } from "./user.service.js";
-// import { confirmEmail, getProfile, signIn, signUp } from "./user.service.js";
-// import { authentication } from "../../middleware/auth.js";
-// import { validation } from "../../middleware/validation.js";
-// import { signUpSchema } from "./user.validation.js";
+import { confirmOTP, signIn, signUp } from "./user.service.js";
+import { validation } from '../../middleware/validation.js';
+import * as UV from './user.validation.js';
+
 
 const userRouter = Router();
 
+userRouter.post("/signUp", validation(UV.signUpSchema), signUp);
 
-// userRouter.post("/signUp", validation(signUpSchema), signUp);
-// userRouter.post("/signIn", signIn);
-// userRouter.get("/confirmEmail/:token", confirmEmail);
-// userRouter.get("/getProfile", authentication, getProfile);
-userRouter.post("/addUser", addUser);
+userRouter.post("/confirmOTP", validation(UV.confirmOTPSchema), confirmOTP);
+
+userRouter.post("/signIn", validation(UV.signInSchema), signIn);
+
+
 
 
 

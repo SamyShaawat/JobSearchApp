@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import CryptoJS from 'crypto-js';
 
 const otpSchema = new mongoose.Schema({
     code: {
@@ -116,18 +117,18 @@ userSchema.virtual('username').get(function () {
 userSchema.set('toJSON', { virtuals: true });
 userSchema.set('toObject', { virtuals: true });
 
-// Pre-save hook for encrypting mobileNumber (if modified)
+// Pre-save hook for encrypting mobileNumber 
 userSchema.pre('save', function (next) {
     if (this.isModified('mobileNumber')) {
-      // Create cipher with the encryption key from env variable
-      const cipher = crypto.createCipher('aes-256-cbc', process.env.MOBILE_ENCRYPTION_KEY);
-      let encrypted = cipher.update(this.mobileNumber, 'utf8', 'hex');
-      encrypted += cipher.final('hex');
-      this.mobileNumber = encrypted;
+        // Use your encryption key from your environment variable
+        const key = process.env.MOBILE_ENCRYPTION_KEY;
+        // Encrypt the mobileNumber using AES
+        const encrypted = CryptoJS.AES.encrypt(this.mobileNumber, key).toString();
+        this.mobileNumber = encrypted;
     }
     next();
-  });
-  
+});
+
 // mongoose hook for cascading deletion 
 userSchema.pre('remove', async function (next) {
     next();
