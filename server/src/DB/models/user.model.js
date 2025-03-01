@@ -116,6 +116,18 @@ userSchema.virtual('username').get(function () {
 userSchema.set('toJSON', { virtuals: true });
 userSchema.set('toObject', { virtuals: true });
 
+// Pre-save hook for encrypting mobileNumber (if modified)
+userSchema.pre('save', function (next) {
+    if (this.isModified('mobileNumber')) {
+      // Create cipher with the encryption key from env variable
+      const cipher = crypto.createCipher('aes-256-cbc', process.env.MOBILE_ENCRYPTION_KEY);
+      let encrypted = cipher.update(this.mobileNumber, 'utf8', 'hex');
+      encrypted += cipher.final('hex');
+      this.mobileNumber = encrypted;
+    }
+    next();
+  });
+  
 // mongoose hook for cascading deletion 
 userSchema.pre('remove', async function (next) {
     next();
