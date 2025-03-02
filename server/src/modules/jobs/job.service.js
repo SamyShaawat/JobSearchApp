@@ -95,3 +95,33 @@ export const updateJob = asyncHandler(async (req, res, next) => {
         data: job
     });
 });
+
+export const deleteJob = asyncHandler(async (req, res, next) => {
+    const { jobId } = req.params;
+
+    // Find the job
+    const job = await jobOpportunityModel.findById(jobId);
+    if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Find the company
+    const company = await companyModel.findById(job.companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check if the current user is in the company's HR array
+
+    const isHR = company.HRs.some(hrId => hrId.toString() === req.user._id.toString());
+    if (!isHR) {
+        return res.status(403).json({
+            message: "Forbidden: Only the company HR can delete this job"
+        });
+    }
+
+    // Delete the job
+    await jobOpportunityModel.findByIdAndDelete(jobId);
+
+    return res.status(200).json({ message: "Job deleted successfully" });
+});

@@ -11,6 +11,6 @@ jobOpportunityRouter.post("/addJob", userAuth, validation(JV.createJobSchema), J
 
 jobOpportunityRouter.patch("/updateJob/:jobId", userAuth, validation(JV.updateJobSchema), JS.updateJob);
 
-// jobOpportunityRouter.delete("/deleteJob/:jobId", userAuth, JS.deleteJob);
+jobOpportunityRouter.delete("/deleteJob/:jobId", userAuth, JS.deleteJob);
 
 export default jobOpportunityRouter;
