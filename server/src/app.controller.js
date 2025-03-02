@@ -2,7 +2,7 @@ import connectionDB from "./DB/connectionDB.js";
 import applicationRouter from "./modules/applications/application.controller.js";
 import chatRouter from "./modules/chats/chat.controller.js";
 import companyRouter from "./modules/companies/company.controller.js";
-import jobOpportunityRouter from "./modules/jobs/jobOpportunity.controller.js";
+import jobOpportunityRouter from "./modules/jobs/job.controller.js";
 import userRouter from "./modules/users/user.controller.js";
 import { graphqlMiddleware } from "../src/graphql/graphql.js";
 import { globalErrorHandler } from "./utils/errorHandling.js";
