@@ -94,7 +94,7 @@ export const signIn = asyncHandler(async (req, res, next) => {
     const { email, password } = req.body;
 
     // Find user by email and provider
-    const user = await userModel.findOne({ email, provider: 'system' });
+    const user = await userModel.findOne({ email, provider: "system" });
     if (!user) {
         return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -105,16 +105,24 @@ export const signIn = asyncHandler(async (req, res, next) => {
         return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT tokens: access token (1 hour) and refresh token (7 days)
-    const accessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '1h' });
-    const refreshToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '7d' });
+    // Decide which signature key to use based on role
+    let signatureKey;
+    if (user.role === "Admin") {
+        signatureKey = process.env.SIGNATURE_TOKEN_ADMIN;
+    } else {
+        signatureKey = process.env.SIGNATURE_TOKEN_USER;
+    }
+
+    // Generate JWT tokens with that signature key
+    const accessToken = jwt.sign({ id: user._id }, signatureKey, { expiresIn: "1h" });
+    const refreshToken = jwt.sign({ id: user._id }, signatureKey, { expiresIn: "7d" });
 
     return res.status(200).json({
         message: "Sign in successful",
-        tokens: { accessToken, refreshToken }
+        tokens: { accessToken, refreshToken },
+        role: user.role
     });
 });
-
 export const googleSignUp = asyncHandler(async (req, res, next) => {
     const { idToken } = req.body;
     const ticket = await client.verifyIdToken({
@@ -158,7 +166,7 @@ export const googleSignUp = asyncHandler(async (req, res, next) => {
 export const googleSignIn = asyncHandler(async (req, res, next) => {
     const { idToken } = req.body;
 
-    // Verify the idToken
+    // Verify the idToken from Google
     const ticket = await client.verifyIdToken({
         idToken,
         audience: process.env.GOOGLE_CLIENT_ID,
@@ -169,19 +177,34 @@ export const googleSignIn = asyncHandler(async (req, res, next) => {
     const { email } = payload;
 
     // Check if the user exists and is a Google user
-    const user = await userModel.findOne({ email, provider: 'google' });
+    const user = await userModel.findOne({ email, provider: "google" });
     if (!user) {
-        return res.status(404).json({ message: "User not found. Please sign up with Google first." });
+        return res
+            .status(404)
+            .json({ message: "User not found. Please sign up with Google first." });
     }
 
-    // Generate tokens
-    const accessToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '1h' });
-    const refreshToken = jwt.sign({ id: user._id }, process.env.SIGNATURE_TOKEN_USER, { expiresIn: '7d' });
+    // Decide which signature key to use based on the user's role
+    let signatureKey;
+    if (user.role === "Admin") {
+        signatureKey = process.env.SIGNATURE_TOKEN_ADMIN;  
+    } else {
+        signatureKey = process.env.SIGNATURE_TOKEN_USER;   
+    }
+
+    // Generate JWT tokens: access token (1 hour) and refresh token (7 days)
+    const accessToken = jwt.sign({ id: user._id }, signatureKey, {
+        expiresIn: "1h",
+    });
+    const refreshToken = jwt.sign({ id: user._id }, signatureKey, {
+        expiresIn: "7d",
+    });
 
     return res.status(200).json({
         message: "Google sign in successful",
         tokens: { accessToken, refreshToken },
-        data: user
+        role: user.role, 
+        data: user,
     });
 });
 
@@ -505,3 +528,4 @@ export const softDeleteAccount = asyncHandler(async (req, res, next) => {
         message: "User account soft-deleted successfully"
     });
 });
+

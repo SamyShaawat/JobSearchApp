@@ -2,8 +2,9 @@ import { Router } from "express";
 import * as US from "./user.service.js";
 import * as UV from "./user.validation.js";
 import { validation } from "../../middleware/validation.js";
-import { authentication } from "../../middleware/authentication.js";
 import { uploadProfilePic, uploadCoverPic } from "../../middleware/multer.js";
+import { userAuth } from "../../middleware/userAuth.js";
+import { adminAuth } from "../../middleware/adminAuth.js";
 
 const userRouter = Router();
 
@@ -20,19 +21,22 @@ userRouter.post("/resetPassword", validation(UV.resetPasswordSchema), US.resetPa
 userRouter.post("/refreshToken", validation(UV.refreshTokenSchema), US.refreshToken);
 
 // 2- User Apis
-userRouter.patch("/updateUser", authentication, validation(UV.updateUserSchema), US.updateUser);
+userRouter.patch("/updateUser", userAuth, validation(UV.updateUserSchema), US.updateUser);
 
-userRouter.get("/getProfile", authentication, US.getProfile);
-userRouter.get("/getAnotherUserProfile/:userId", authentication, US.getAnotherUserProfile);
+userRouter.get("/getProfile", userAuth, US.getProfile);
+userRouter.get("/getAnotherUserProfile/:userId", userAuth, US.getAnotherUserProfile);
 
-userRouter.patch("/updatePassword", authentication, validation(UV.updatePasswordSchema), US.updatePassword);
+userRouter.patch("/updatePassword", userAuth, validation(UV.updatePasswordSchema), US.updatePassword);
 
-userRouter.patch("/uploadProfilePic", authentication, uploadProfilePic.single("profilePic"), US.uploadProfilePic);
-userRouter.patch("/uploadCoverPic", authentication, uploadCoverPic.single("coverPic"), US.uploadCoverPic);
+userRouter.patch("/uploadProfilePic", userAuth, uploadProfilePic.single("profilePic"), US.uploadProfilePic);
+userRouter.patch("/uploadCoverPic", userAuth, uploadCoverPic.single("coverPic"), US.uploadCoverPic);
 
-userRouter.delete("/deleteProfilePic", authentication, US.deleteProfilePic);
-userRouter.delete("/deleteCoverPic", authentication, US.deleteCoverPic);
+userRouter.delete("/deleteProfilePic", userAuth, US.deleteProfilePic);
+userRouter.delete("/deleteCoverPic", userAuth, US.deleteCoverPic);
 
-userRouter.delete("/softDeleteAccount", authentication, US.softDeleteAccount);
+userRouter.delete("/softDeleteAccount", userAuth, US.softDeleteAccount);
+
+// 3- Admin Apis
+userRouter.patch("/toggleBanUser/:userId", adminAuth, US.toggleBanUser);
 
 export default userRouter;
