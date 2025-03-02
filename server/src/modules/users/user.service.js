@@ -575,3 +575,24 @@ export const toggleBanCompany = asyncHandler(async (req, res, next) => {
         return res.status(200).json({ message: "Company unbanned successfully" });
     }
 });
+
+export const approveCompany = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    // Find the company
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check if already approved
+    if (company.approvedByAdmin) {
+        return res.status(400).json({ message: "Company is already approved" });
+    }
+
+    // Approve the company
+    company.approvedByAdmin = true;
+    await company.save();
+
+    return res.status(200).json({ message: "Company approved successfully" });
+});
