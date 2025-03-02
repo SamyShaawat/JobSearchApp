@@ -3,7 +3,7 @@ import * as CV from "./company.validation.js";
 import * as CS from "./company.service.js";
 import { validation } from "../../middleware/validation.js";
 import { userAuth } from "../../middleware/userAuth.js";
-// import { adminAuth } from "../../middleware/adminAuth.js";
+
 import { uploadCompanyLogo, uploadCompanyCover } from "../../middleware/multer.js";
 
 const companyRouter = Router();

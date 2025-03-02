@@ -2,6 +2,7 @@ import companyModel from '../../DB/models/company.model.js';
 import { asyncHandler } from '../../utils/errorHandling.js';
 import cloudinary from '../../../config/cloudinary.js';
 
+
 export const addCompany = asyncHandler(async (req, res, next) => {
     const {
         companyName,
