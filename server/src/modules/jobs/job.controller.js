@@ -9,4 +9,8 @@ const jobOpportunityRouter = Router();
 
 jobOpportunityRouter.post("/addJob", userAuth, validation(JV.createJobSchema), JS.addJob);
 
+jobOpportunityRouter.patch("/updateJob/:jobId", userAuth, validation(JV.updateJobSchema), JS.updateJob);
+
+// jobOpportunityRouter.delete("/deleteJob/:jobId", userAuth, JS.deleteJob);
+
 export default jobOpportunityRouter;

@@ -49,3 +49,49 @@ export const addJob = asyncHandler(async (req, res, next) => {
         data: newJob
     });
 });
+
+export const updateJob = asyncHandler(async (req, res, next) => {
+    const { jobId } = req.params;
+    const {
+        jobTitle,
+        jobLocation,
+        workingTime,
+        seniorityLevel,
+        jobDescription,
+        technicalSkills,
+        softSkills,
+        closed
+    } = req.body;
+
+    // Find the job
+    const job = await jobOpportunityModel.findById(jobId);
+    if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Check if the current user is the owner (the one who 'addedBy')
+    if (job.addedBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({
+            message: "Forbidden: Only the user who created this job can update it"
+        });
+    }
+
+    // Update fields if provided
+    if (jobTitle !== undefined) job.jobTitle = jobTitle;
+    if (jobLocation !== undefined) job.jobLocation = jobLocation;
+    if (workingTime !== undefined) job.workingTime = workingTime;
+    if (seniorityLevel !== undefined) job.seniorityLevel = seniorityLevel;
+    if (jobDescription !== undefined) job.jobDescription = jobDescription;
+    if (technicalSkills !== undefined) job.technicalSkills = technicalSkills;
+    if (softSkills !== undefined) job.softSkills = softSkills;
+    if (closed !== undefined) job.closed = closed;
+
+    job.updatedBy = req.user._id;
+
+    await job.save();
+
+    return res.status(200).json({
+        message: "Job updated successfully",
+        data: job
+    });
+});
