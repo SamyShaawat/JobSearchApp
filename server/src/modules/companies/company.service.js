@@ -134,3 +134,20 @@ export const searchCompanyByName = asyncHandler(async (req, res, next) => {
         data: companies
     });
 });
+
+export const getCompanyWithJobs = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    // Find the company by ID and populate the 'jobs' virtual
+    const company = await companyModel.findById(companyId).populate("jobs");
+
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Return the company doc, which now has a .jobs array
+    return res.status(200).json({
+        message: "Company retrieved successfully",
+        data: company
+    });
+});

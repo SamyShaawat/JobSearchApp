@@ -67,7 +67,15 @@ const companySchema = new mongoose.Schema({
         default: false
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+
+});
+companySchema.virtual('jobs', {
+    ref: 'JobOpportunity',
+    localField: '_id',
+    foreignField: 'companyId'
 });
 
 // mongoose hook for cascading deletion 
