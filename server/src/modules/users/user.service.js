@@ -1,4 +1,5 @@
-import userModel from "../../DB/models/user.model.js"
+import userModel from "../../DB/models/user.model.js";
+import companyModel from "../../DB/models/company.model.js";
 import { asyncHandler } from "../../utils/errorHandling.js";
 import { sendEmail } from '../../service/sendEmails.js';
 import bcrypt from 'bcrypt';
@@ -187,9 +188,9 @@ export const googleSignIn = asyncHandler(async (req, res, next) => {
     // Decide which signature key to use based on the user's role
     let signatureKey;
     if (user.role === "Admin") {
-        signatureKey = process.env.SIGNATURE_TOKEN_ADMIN;  
+        signatureKey = process.env.SIGNATURE_TOKEN_ADMIN;
     } else {
-        signatureKey = process.env.SIGNATURE_TOKEN_USER;   
+        signatureKey = process.env.SIGNATURE_TOKEN_USER;
     }
 
     // Generate JWT tokens: access token (1 hour) and refresh token (7 days)
@@ -203,7 +204,7 @@ export const googleSignIn = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
         message: "Google sign in successful",
         tokens: { accessToken, refreshToken },
-        role: user.role, 
+        role: user.role,
         data: user,
     });
 });
@@ -549,5 +550,28 @@ export const toggleBanUser = asyncHandler(async (req, res, next) => {
         userToToggle.bannedAt = null;
         await userToToggle.save();
         return res.status(200).json({ message: "User unbanned successfully" });
+    }
+});
+
+export const toggleBanCompany = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    // Find the company
+    const companyToToggle = await companyModel.findById(companyId);
+    if (!companyToToggle) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check if the company is currently banned
+    if (!companyToToggle.bannedAt) {
+        // Not banned => ban them
+        companyToToggle.bannedAt = new Date();
+        await companyToToggle.save();
+        return res.status(200).json({ message: "Company banned successfully" });
+    } else {
+        // Already banned => unban them
+        companyToToggle.bannedAt = null;
+        await companyToToggle.save();
+        return res.status(200).json({ message: "Company unbanned successfully" });
     }
 });

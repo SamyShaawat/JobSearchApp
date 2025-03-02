@@ -38,5 +38,6 @@ userRouter.delete("/softDeleteAccount", userAuth, US.softDeleteAccount);
 
 // 3- Admin Apis
 userRouter.patch("/toggleBanUser/:userId", adminAuth, US.toggleBanUser);
+userRouter.patch("/toggleBanCompany/:companyId", adminAuth, US.toggleBanCompany);
 
 export default userRouter;
