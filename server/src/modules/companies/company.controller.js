@@ -11,6 +11,6 @@ companyRouter.post("/addCompany", validation(CV.createCompanySchema), CS.addComp
 
 companyRouter.patch("/updateCompany/:companyId", userAuth, validation(CV.updateCompanySchema), CS.updateCompany);
 
-// companyRouter.patch("/softDeleteCompany/:companyId", userAuth, CS.softDeleteCompany);
+companyRouter.patch("/softDeleteCompany/:companyId", userAuth, CS.softDeleteCompany);
 
 export default companyRouter;

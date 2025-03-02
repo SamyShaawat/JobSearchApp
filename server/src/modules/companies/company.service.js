@@ -78,3 +78,36 @@ export const updateCompany = asyncHandler(async (req, res, next) => {
         data: company
     });
 });
+
+export const softDeleteCompany = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    // Find the company
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check if already soft-deleted
+    if (company.deletedAt) {
+        return res.status(400).json({ message: "Company is already soft-deleted" });
+    }
+
+    // Ensure only admin or the company owner can do this
+    const isAdmin = req.user.role === "Admin";
+    const isOwner = company.createdBy.toString() === req.user._id.toString();
+    if (!isAdmin && !isOwner) {
+        return res.status(403).json({
+            message: "Forbidden: Only admin or company owner can soft-delete this company"
+        });
+    }
+
+    // Soft delete by setting deletedAt
+    company.deletedAt = new Date();
+    await company.save();
+
+    return res.status(200).json({
+        message: "Company soft-deleted successfully",
+        data: company
+    });
+});
