@@ -13,7 +13,7 @@ const profileStorage = new CloudinaryStorage({
 });
 
 // Cover pics storage
-const coverStorage = new CloudinaryStorage({
+const coverUserStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "coverPics",
@@ -22,6 +22,28 @@ const coverStorage = new CloudinaryStorage({
   }
 });
 
-// Export two separate Multer middlewares
+const logoCompanyStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "companyLogos",
+    allowed_formats: ["jpg", "png", "jpeg"],
+    public_id: (req, file) => file.originalname
+  }
+});
+
+// Company cover storage
+// const coverCompanyStorage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: "companyCovers",
+//     allowed_formats: ["jpg", "png", "jpeg"],
+//     public_id: (req, file) => file.originalname
+//   }
+// });
+
+// Export separate Multer middlewares
 export const uploadProfilePic = multer({ storage: profileStorage });
-export const uploadCoverPic = multer({ storage: coverStorage });
+export const uploadCoverPic = multer({ storage: coverUserStorage });
+export const uploadCompanyLogo = multer({ storage: logoCompanyStorage });
+export const uploadCompanyCover = multer({ storage: coverCompanyStorage });
+

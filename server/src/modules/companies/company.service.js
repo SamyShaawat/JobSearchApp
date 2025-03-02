@@ -151,3 +151,42 @@ export const getCompanyWithJobs = asyncHandler(async (req, res, next) => {
         data: company
     });
 });
+
+export const uploadCompanyLogo = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    // Check if Multer got the file
+    if (!req.file) {
+        return res.status(400).json({ message: "No logo file uploaded" });
+    }
+
+    // Find the company
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check ownership or admin
+    const isAdmin = req.user.role === "Admin";
+    const isOwner = company.createdBy.toString() === req.user._id.toString();
+    if (!isAdmin && !isOwner) {
+        return res.status(403).json({ message: "Forbidden: Only admin or owner can upload logo" });
+    }
+
+    // remove old logo from Cloudinary
+    if (company.logo?.public_id) {
+        await cloudinary.uploader.destroy(company.logo.public_id);
+    }
+
+    // Update company's logo with the new file info
+    company.logo = {
+        secure_url: req.file.path,
+        public_id: req.file.filename
+    };
+    await company.save();
+
+    return res.status(200).json({
+        message: "Company logo uploaded successfully",
+        data: company.logo
+    });
+});
