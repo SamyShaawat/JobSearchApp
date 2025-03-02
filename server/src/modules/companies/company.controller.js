@@ -19,7 +19,7 @@ companyRouter.get("/getCompanyWithJobs/:companyId", CS.getCompanyWithJobs);
 companyRouter.patch("/uploadLogo/:companyId", userAuth, uploadCompanyLogo.single("logo"), CS.uploadCompanyLogo);
 companyRouter.patch("/uploadCoverPic/:companyId", userAuth, uploadCompanyCover.single("coverPic"), CS.uploadCompanyCoverPic);
 
-// companyRouter.delete("/deleteLogo/:companyId", userAuth, CS.deleteCompanyLogo);
+companyRouter.delete("/deleteLogo/:companyId", userAuth, CS.deleteCompanyLogo);
 // companyRouter.delete("/deleteCoverPic/:companyId", userAuth, CS.deleteCompanyCoverPic);
 
 export default companyRouter;

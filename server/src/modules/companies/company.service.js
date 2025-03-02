@@ -225,3 +225,29 @@ export const uploadCompanyCoverPic = asyncHandler(async (req, res, next) => {
         data: company.coverPic
     });
 });
+
+export const deleteCompanyLogo = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    const isAdmin = req.user.role === "Admin";
+    const isOwner = company.createdBy.toString() === req.user._id.toString();
+    if (!isAdmin && !isOwner) {
+        return res.status(403).json({ message: "Forbidden: Only admin or owner can delete logo" });
+    }
+
+    // If there's a public_id, remove from Cloudinary
+    if (company.logo?.public_id) {
+        await cloudinary.uploader.destroy(company.logo.public_id);
+    }
+
+    // Clear the logo field
+    company.logo = { secure_url: null, public_id: null };
+    await company.save();
+
+    return res.status(200).json({ message: "Company logo deleted successfully" });
+});
