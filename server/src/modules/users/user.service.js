@@ -529,3 +529,25 @@ export const softDeleteAccount = asyncHandler(async (req, res, next) => {
     });
 });
 
+export const toggleBanUser = asyncHandler(async (req, res, next) => {
+    const { userId } = req.params;
+
+    // Find the user
+    const userToToggle = await userModel.findById(userId);
+    if (!userToToggle) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if user is currently banned
+    if (!userToToggle.bannedAt) {
+        // Not banned => ban them
+        userToToggle.bannedAt = new Date();
+        await userToToggle.save();
+        return res.status(200).json({ message: "User banned successfully" });
+    } else {
+        // Already banned => unban them
+        userToToggle.bannedAt = null;
+        await userToToggle.save();
+        return res.status(200).json({ message: "User unbanned successfully" });
+    }
+});
