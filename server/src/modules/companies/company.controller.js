@@ -4,7 +4,7 @@ import * as CS from "./company.service.js";
 import { validation } from "../../middleware/validation.js";
 import { userAuth } from "../../middleware/userAuth.js";
 // import { adminAuth } from "../../middleware/adminAuth.js";
-import { uploadCompanyLogo, uploadCompanyCover } from "../../middleware/multerCompany.js";
+import { uploadCompanyLogo, uploadCompanyCover } from "../../middleware/multer.js";
 
 const companyRouter = Router();
 
@@ -20,6 +20,6 @@ companyRouter.patch("/uploadLogo/:companyId", userAuth, uploadCompanyLogo.single
 companyRouter.patch("/uploadCoverPic/:companyId", userAuth, uploadCompanyCover.single("coverPic"), CS.uploadCompanyCoverPic);
 
 companyRouter.delete("/deleteLogo/:companyId", userAuth, CS.deleteCompanyLogo);
-// companyRouter.delete("/deleteCoverPic/:companyId", userAuth, CS.deleteCompanyCoverPic);
+companyRouter.delete("/deleteCoverPic/:companyId", userAuth, CS.deleteCompanyCoverPic);
 
 export default companyRouter;
