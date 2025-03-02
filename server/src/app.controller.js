@@ -7,35 +7,51 @@ import userRouter from "./modules/users/user.controller.js";
 import { graphqlMiddleware } from "../src/graphql/graphql.js";
 import { globalErrorHandler } from "./utils/errorHandling.js";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 const bootstrap = async (app, express) => {
+  // Use Helmet 
+  app.use(helmet());
 
+  // Rate-limit
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, 
+    max: 100,                
+    message: "Too many requests, please try again later."
+  });
+  app.use(limiter);
+
+  // CORS config
   app.use(
     cors({
-      origin: "http://localhost:5173",
+      origin: "http://localhost:5173", // your front-end origin
       credentials: true,
     })
   );
-  // use json middleware for parsing request data
+
+  // Parse JSON bodies
   app.use(express.json());
 
-  // application routes
+  // Application routes
   app.use("/users", userRouter);
   app.use("/companies", companyRouter);
   app.use("/jobs", jobOpportunityRouter);
   app.use("/applications", applicationRouter);
   app.use("/chats", chatRouter);
 
+  // GraphQL endpoint
   app.use("/graphql", graphqlMiddleware);
-  // connect to database and wait until it's successful
+
+  // Connect to the database
   await connectionDB();
 
-  // catch-all for undefined routes
+  // Catch-all for undefined routes
   app.use("*", (req, res, next) => {
     return next(new Error(`${req.originalUrl} is an invalid URL`));
   });
 
-  // global error handler
+  // Global error handler
   app.use(globalErrorHandler);
 };
 
