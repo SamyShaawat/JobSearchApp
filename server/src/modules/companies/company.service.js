@@ -1,5 +1,6 @@
 import companyModel from '../../DB/models/company.model.js';
 import { asyncHandler } from '../../utils/errorHandling.js';
+import cloudinary from '../../../config/cloudinary.js';
 
 export const addCompany = asyncHandler(async (req, res, next) => {
     const {
@@ -188,5 +189,39 @@ export const uploadCompanyLogo = asyncHandler(async (req, res, next) => {
     return res.status(200).json({
         message: "Company logo uploaded successfully",
         data: company.logo
+    });
+});
+
+export const uploadCompanyCoverPic = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+    if (!req.file) {
+        return res.status(400).json({ message: "No cover pic file uploaded" });
+    }
+
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    const isAdmin = req.user.role === "Admin";
+    const isOwner = company.createdBy.toString() === req.user._id.toString();
+    if (!isAdmin && !isOwner) {
+        return res.status(403).json({ message: "Forbidden: Only admin or owner can upload cover pic" });
+    }
+
+    // Remove old cover if exists
+    if (company.coverPic?.public_id) {
+        await cloudinary.uploader.destroy(company.coverPic.public_id);
+    }
+
+    company.coverPic = {
+        secure_url: req.file.path,
+        public_id: req.file.filename
+    };
+    await company.save();
+
+    return res.status(200).json({
+        message: "Company cover pic uploaded successfully",
+        data: company.coverPic
     });
 });
