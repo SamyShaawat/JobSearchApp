@@ -40,3 +40,41 @@ export const addCompany = asyncHandler(async (req, res, next) => {
         data: newCompany
     });
 });
+
+export const updateCompany = asyncHandler(async (req, res, next) => {
+    const { companyId } = req.params;
+    const {
+        companyName,
+        description,
+        industry,
+        address,
+        numberOfEmployees,
+        companyEmail
+    } = req.body;
+
+    // Find the company
+    const company = await companyModel.findById(companyId);
+    if (!company) {
+        return res.status(404).json({ message: "Company not found" });
+    }
+
+    // Check if current user is the owner
+    if (company.createdBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Forbidden: Only the company owner can update" });
+    }
+
+
+    if (companyName !== undefined) company.companyName = companyName;
+    if (description !== undefined) company.description = description;
+    if (industry !== undefined) company.industry = industry;
+    if (address !== undefined) company.address = address;
+    if (numberOfEmployees !== undefined) company.numberOfEmployees = numberOfEmployees;
+    if (companyEmail !== undefined) company.companyEmail = companyEmail;
+
+    await company.save();
+
+    return res.status(200).json({
+        message: "Company updated successfully",
+        data: company
+    });
+});
