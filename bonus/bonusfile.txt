@@ -1,0 +1,2 @@
+1. Integration with Front-end: created 3 pages in the client folder and integrate them with server
+2. Problem Solving: solved  Jumb Game in bonus.js file 
