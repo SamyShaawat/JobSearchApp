@@ -1,0 +1,1117 @@
+{
+	"info": {
+		"_postman_id": "e0c2a804-182a-46a6-be67-a704faa59753",
+		"name": "JobSearchApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25141807",
+		"_collection_link": "https://interstellar-trinity-85919.postman.co/workspace/Samy-Mostafa-Assignment4-010915~c39105d5-716a-40b6-84fc-8f509b0b5c18/collection/25141807-e0c2a804-182a-46a6-be67-a704faa59753?action=share&source=collection_link&creator=25141807"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "signUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Reciever\",\r\n  \"lastName\": \"User\",\r\n  \"email\": \"Reciever.user@gmail.com\",\r\n  \"password\": \"password123\",\r\n  \"mobileNumber\": \"01091539396\",\r\n  \"gender\": \"Female\",\r\n  \"DOB\": \"2001-09-28\",\r\n  \"provider\": \"system\",\r\n  \"role\": \"User\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"signUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirmOTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"samy.mostafa2001@gmail.com\",\r\n  \"otp\": \"726580\"  \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/confirmOTP",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"confirmOTP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"samy.shaawat@gmail.com\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/signIn",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"signIn"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "googleSignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc2M2Y3YzRjZDI2YTFlYjJiMWIzOWE4OGY0NDM0ZDFmNGQ5YTM2OGIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI4NTY0OTAxMzEyNjEtNGJua2hkZzB2ZG5hdXV2Zms2cHRncGd0cDFzYTdhajYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI4NTY0OTAxMzEyNjEtNGJua2hkZzB2ZG5hdXV2Zms2cHRncGd0cDFzYTdhajYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTU2MDYwNTgzMzMzMzg5MjkwODciLCJlbWFpbCI6InNhbXkuc2hhYXdhdEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkdzaU5sRERjUUNocXRNSVlVOEhxZVEiLCJuYW1lIjoiU2FteSBNb3N0YWZhIChTaGFhd2F0KSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLb3Z5ZWNYdXEtZk16b1VEWGNHQl9LSThCMGg5OGMwX3pTa0JwWWJTSllfaDhuZFNhaDVnPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNhbXkiLCJmYW1pbHlfbmFtZSI6Ik1vc3RhZmEiLCJpYXQiOjE3NDA4MTIxNTgsImV4cCI6MTc0MDgxNTc1OH0.jhjTWDXwEcfTo2xV5wL4RhO1Gu9_U-O9X5XTVwbsgum-VLlvO1ZoUvkQXLF20C4sZaB46rSLR6v4p-AenJ-UTcU4ccqYgSa9z6BT8Zh9aLXLoOUFQS5_3mPMBZ5t8E7SuEgj2Xr_s4oz-qY5cbhDkDWL_wycLWgUJbzH2Bxjw-wg8SuMjgNvKTNRKAV89DsuZlGxBAX6EabBeMeyM8J9LZia8kto2r3rB-3G0NKQeJB5rsS7BssAWA2OXd0NLNH07TMM3zWfzynMa2Z1nXEfel0h3vReSuB6bCCvn1802C0n2YpClTvnwwYcFH-Zf1BEXuTMS9Gvlsvic8s1ktO7hg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/google/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"google",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "googleSignIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6Ijc2M2Y3YzRjZDI2YTFlYjJiMWIzOWE4OGY0NDM0ZDFmNGQ5YTM2OGIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI4NTY0OTAxMzEyNjEtNGJua2hkZzB2ZG5hdXV2Zms2cHRncGd0cDFzYTdhajYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI4NTY0OTAxMzEyNjEtNGJua2hkZzB2ZG5hdXV2Zms2cHRncGd0cDFzYTdhajYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTU2MDYwNTgzMzMzMzg5MjkwODciLCJlbWFpbCI6InNhbXkuc2hhYXdhdEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkdzaU5sRERjUUNocXRNSVlVOEhxZVEiLCJuYW1lIjoiU2FteSBNb3N0YWZhIChTaGFhd2F0KSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLb3Z5ZWNYdXEtZk16b1VEWGNHQl9LSThCMGg5OGMwX3pTa0JwWWJTSllfaDhuZFNhaDVnPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNhbXkiLCJmYW1pbHlfbmFtZSI6Ik1vc3RhZmEiLCJpYXQiOjE3NDA4MTIxNTgsImV4cCI6MTc0MDgxNTc1OH0.jhjTWDXwEcfTo2xV5wL4RhO1Gu9_U-O9X5XTVwbsgum-VLlvO1ZoUvkQXLF20C4sZaB46rSLR6v4p-AenJ-UTcU4ccqYgSa9z6BT8Zh9aLXLoOUFQS5_3mPMBZ5t8E7SuEgj2Xr_s4oz-qY5cbhDkDWL_wycLWgUJbzH2Bxjw-wg8SuMjgNvKTNRKAV89DsuZlGxBAX6EabBeMeyM8J9LZia8kto2r3rB-3G0NKQeJB5rsS7BssAWA2OXd0NLNH07TMM3zWfzynMa2Z1nXEfel0h3vReSuB6bCCvn1802C0n2YpClTvnwwYcFH-Zf1BEXuTMS9Gvlsvic8s1ktO7hg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/google/signin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"google",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendOTPForForgetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"samy.mostafa2001@gmail.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/forgetPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"forgetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"samy.mostafa2001@gmail.com\",\r\n  \"newPassword\": \"newSecret123\",\r\n  \"otp\": \"980071\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/resetPassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"resetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzI4NGNkNmJhNWY5NmQzODA3YjZhNiIsImlhdCI6MTc0MDgxMzUzNiwiZXhwIjoxNzQxNDE4MzM2fQ.AzmDfubyfIz7VgGYdeT6B34GFMfqHUFxr5hr06GYG30\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzI4NGNkNmJhNWY5NmQzODA3YjZhNiIsImlhdCI6MTc0MDgyODg1NSwiZXhwIjoxNzQwODMyNDU1fQ.hZj2lOtipsu9HMcrAOHFNB-LbCl2KrwyO2IXbNdeJeY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Mai\",\r\n  \"lastName\": \"Omar\",\r\n  \"mobileNumber\": \"01056681236\",\r\n  \"DOB\": \"1992-06-15\",\r\n  \"gender\": \"Female\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/updateUser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProfile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzI4NGNkNmJhNWY5NmQzODA3YjZhNiIsImlhdCI6MTc0MDgzMDA0NywiZXhwIjoxNzQwODMzNjQ3fQ.ZxACQXxXFDunpW3Lxfb2axvWoCid-YFr5B6lmqHspr4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/getProfile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"getProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAnotherUserProfile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDgzMTc3NCwiZXhwIjoxNzQwODM1Mzc0fQ.-vpji-5yra1-IZkGzHihe-hANqW-aWA6v1e0zKbO8xQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/getAnotherUserProfile/67c284cd6ba5f96d3807b6a6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"getAnotherUserProfile",
+								"67c284cd6ba5f96d3807b6a6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassword",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDgzMzA1OCwiZXhwIjoxNzQwODM2NjU4fQ.utv-lr-hdwaOEL8tKpN52tPthDNCPrPWpxRLIv_k0Jw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\": \"password123\",\r\n    \"newPassword\": \"myNewPassword456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/updatePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadProfilePic",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDg2MjkwMCwiZXhwIjoxNzQwODY2NTAwfQ.xWNGQhrS6SdSDBfa4nZrJEiUQTObA0wZgwMxZzmem6g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "profilePic",
+									"type": "file",
+									"src": "/D:/4th year/second term/compilers/labs/Lab5_120190076/120190076_lab5.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/uploadProfilePic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"uploadProfilePic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadCoverPic",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDg2NTYzNywiZXhwIjoxNzQwODY5MjM3fQ.j7btXp-g3O7Ngiqg8Riy2F5WzTeb9toV6lzY82eKLV8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "coverPic",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/me.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/uploadCoverPic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"uploadCoverPic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProfilePic",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDg2NTYzNywiZXhwIjoxNzQwODY5MjM3fQ.j7btXp-g3O7Ngiqg8Riy2F5WzTeb9toV6lzY82eKLV8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/deleteProfilePic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"deleteProfilePic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCoverPic",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDg2NTYzNywiZXhwIjoxNzQwODY5MjM3fQ.j7btXp-g3O7Ngiqg8Riy2F5WzTeb9toV6lzY82eKLV8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/deleteCoverPic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"deleteCoverPic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "softDeleteAccount",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzJmYmI0OGUwNmM1ZDYzMGEwYWNlYiIsImlhdCI6MTc0MDg2Njg3MCwiZXhwIjoxNzQwODcwNDcwfQ.PQPXIyznXUnZiNhqsUSeN0zwnonbd_4Fhbnzfwf2Rww",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/softDeleteAccount",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"softDeleteAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "toggleBanUser",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg3NjUxMSwiZXhwIjoxNzQwODgwMTExfQ.2FC9UZ2FEn7xx2khcEK71zQQ0ZlVOShw1E-SVUSwuqE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/toggleBanUser/67c38c337fafcf2a289446ea",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"toggleBanUser",
+								"67c38c337fafcf2a289446ea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "toggleBanCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Admin eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzU0N2ZhZmNmMmEyODk0NDZlZCIsImlhdCI6MTc0MDg3NzUyOCwiZXhwIjoxNzQwODgxMTI4fQ.5JALUBa-9hB-RqKFf0p6x4DAsNbomLv_mpeSXXBV1k0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/toggleBanCompany/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"toggleBanCompany",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approveCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Admin eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzU0N2ZhZmNmMmEyODk0NDZlZCIsImlhdCI6MTc0MDg5MzMxNywiZXhwIjoxNzQwODk2OTE3fQ.I_MeXdJGLODQ3QUSwRpqhJyUw5NwQfYbW2w0l3pHwiE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/approveCompany/67c3ec43a5a25f003395099d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"approveCompany",
+								"67c3ec43a5a25f003395099d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "graphql",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\r\n  users {\r\n    _id\r\n    firstName\r\n    lastName\r\n    email\r\n  }\r\n  companies {\r\n    _id\r\n    companyName\r\n    industry\r\n    approvedByAdmin\r\n  }\r\n}\r\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "addCollection",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyName\": \"TechCorp\",\r\n    \"description\": \"We do tech stuff\",\r\n    \"industry\": \"IT\",\r\n    \"address\": \"123 Tech Street\",\r\n    \"numberOfEmployees\": 15,\r\n    \"companyEmail\": \"info@techcorp.com\",\r\n    \"createdBy\": \"67c38c337fafcf2a289446ea\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/companies/addCompany",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"addCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5NDMwMywiZXhwIjoxNzQwODk3OTAzfQ.5nXhef5ZLUWuNGA0Nnrwr6DFlJnRoxZgPjMUHNjKp-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"companyName\": \"Updated Name\",\r\n  \"description\": \"New description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/companies/updateCompany/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"updateCompany",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "softDeleteCompany",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5NDMwMywiZXhwIjoxNzQwODk3OTAzfQ.5nXhef5ZLUWuNGA0Nnrwr6DFlJnRoxZgPjMUHNjKp-8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/companies/softDeleteCompany/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"softDeleteCompany",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "searchByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/companies/searchByName?name=TechCorp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"searchByName"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "TechCorp"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCompanyWithJobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/companies/getCompanyWithJobs/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"getCompanyWithJobs",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadLogo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": " multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5ODg2OSwiZXhwIjoxNzQwOTAyNDY5fQ.I3xSjVyEEaQFz0eXbPTJWof-QOUGB6MK7mkdfIi4VYc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "logo",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/background.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/companies/uploadLogo/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"uploadLogo",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "uploadCoverPic",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": " multipart/form-data",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5ODg2OSwiZXhwIjoxNzQwOTAyNDY5fQ.I3xSjVyEEaQFz0eXbPTJWof-QOUGB6MK7mkdfIi4VYc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "coverPic",
+									"type": "file",
+									"src": "/C:/Users/Lenovo/Downloads/background.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/companies/uploadCoverPic/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"uploadCoverPic",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteLogo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5ODg2OSwiZXhwIjoxNzQwOTAyNDY5fQ.I3xSjVyEEaQFz0eXbPTJWof-QOUGB6MK7mkdfIi4VYc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/companies/deleteLogo/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"deleteLogo",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCoverPic",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5ODg2OSwiZXhwIjoxNzQwOTAyNDY5fQ.I3xSjVyEEaQFz0eXbPTJWof-QOUGB6MK7mkdfIi4VYc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/companies/deleteCoverPic/67c38ae17fafcf2a289446e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"companies",
+								"deleteCoverPic",
+								"67c38ae17fafcf2a289446e7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "addJob",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDg5OTk4OSwiZXhwIjoxNzQwOTAzNTg5fQ.uHH_ifBbrvJta5Fg0xEdtriI3sMOswZbBNPO3R7EROc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"NodeJs Back-end Developer\",\r\n  \"jobLocation\": \"remotely\",\r\n  \"workingTime\": \"full-time\",\r\n  \"seniorityLevel\": \"Junior\",\r\n  \"jobDescription\": \"Develop back-end services using Node.js\",\r\n  \"technicalSkills\": [\"nodejs\", \"express\", \"mongodb\"],\r\n  \"softSkills\": [\"teamwork\", \"time management\"],\r\n  \"companyId\": \"67c38ae17fafcf2a289446e7\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/jobs/addJob",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jobs",
+								"addJob"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateJob",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDkwMTUxMywiZXhwIjoxNzQwOTA1MTEzfQ.U4ficQRPkCQ9u42WUyVrbuYkdUvV9gk2VRyIwVAZTC4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"Updated Title\",\r\n  \"closed\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/jobs/updateJob/67c3f98744b446760563d8c2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jobs",
+								"updateJob",
+								"67c3f98744b446760563d8c2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteJob",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzM4YzMzN2ZhZmNmMmEyODk0NDZlYSIsImlhdCI6MTc0MDkwMTUxMywiZXhwIjoxNzQwOTA1MTEzfQ.U4ficQRPkCQ9u42WUyVrbuYkdUvV9gk2VRyIwVAZTC4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/jobs/deleteJob/67c3f98744b446760563d8c2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"jobs",
+								"deleteJob",
+								"67c3f98744b446760563d8c2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "addApplication",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobId\": \"67bfa1d8564518aace7c52ed\",  \r\n  \"userId\": \"67bf9c1cab17689b33661198\", \r\n  \"userCV\": {\r\n    \"secure_url\": \"https://example.com/userCV.pdf\",\r\n    \"public_id\": \"cv_123\"\r\n  },\r\n  \"status\": \"pending\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/applications/addApplication",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applications",
+								"addApplication"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chats",
+			"item": [
+				{
+					"name": "addChat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"senderId\": \"67bf9c1cab17689b33661198\",  \r\n  \"receiverId\": \"67bfa849cb8f0897e4ad9c64\", \r\n  \"messages\": [\r\n    {\r\n      \"message\": \"Hello, please review the job application.\",\r\n      \"senderId\": \"67bf9c1cab17689b33661198\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/chats/addChat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"chats",
+								"addChat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
