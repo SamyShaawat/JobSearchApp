@@ -13,4 +13,6 @@ companyRouter.patch("/updateCompany/:companyId", userAuth, validation(CV.updateC
 
 companyRouter.patch("/softDeleteCompany/:companyId", userAuth, CS.softDeleteCompany);
 
+companyRouter.get("/searchByName", CS.searchCompanyByName);
+
 export default companyRouter;

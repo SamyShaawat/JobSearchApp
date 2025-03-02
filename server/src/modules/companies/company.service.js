@@ -111,3 +111,26 @@ export const softDeleteCompany = asyncHandler(async (req, res, next) => {
         data: company
     });
 });
+
+export const searchCompanyByName = asyncHandler(async (req, res, next) => {
+    const { name } = req.query;
+
+    // Check if 'name' query param is provided
+    if (!name) {
+        return res.status(400).json({ message: "No name query provided" });
+    }
+
+    const companies = await companyModel.find({
+        companyName: { $regex: name, $options: "i" }
+    });
+
+    // 3return 404 or an empty array
+    if (!companies.length) {
+        return res.status(404).json({ message: "No companies found with that name" });
+    }
+
+    return res.status(200).json({
+        message: "Companies found",
+        data: companies
+    });
+});
